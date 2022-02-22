@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expenses tracking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/ce88e83426.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="script2.js"></script>
+  </head>
+  <body>
+    <header class="header-container">
+      <div class="logo">
+        <i class="fa-solid fa-comment-dollar"></i>
+        <div class="title">Expense Tracker</div>
+      </div>
+      <nav class="nav-container">
+        <ul class="nav-list">
+          <li class="nav-items nav-home">
+            <a href="#" class="nav-link">Home</a>
+          </li>
+          <li class="nav-items nav-budget">
+            <a href="#" class="nav-link">Budget</a>
+          </li>
+          <li class="nav-items nav-stat">
+            <a href="#" class="nav-link">Statistics</a>
+          </li>
+          <li class="nav-items nav-setting">
+            <a href="#" class="nav-link">Setting</a>
+          </li>
+          <li class="nav-items" id="deleteAll">DeleteAll</li>
+        </ul>
+      </nav>
+    </header>
+    <section class="section" id="home">
+      <div class="left">
+        <div class="summary-container">
+          <h2 class="summary-title">
+            <span class="summary-title-month">February</span> Summary
+          </h2>
+
+          <div class="summary-progress">
+            <p class="summary-budget">
+              Budget <span class="summary-budget-amt">$1,500.00</span>
+            </p>
+            <div class="summary-budget-progress">
+              <span class="summary-expense-progress" style="width: 25%"></span>
+            </div>
+            <div class="progress-detail">
+              <div class="progress-detail-expense">
+                <p class="detail-expense">Expense</p>
+                <p class="detail-expense detail-expense-amt">$522.00</p>
+              </div>
+              <div class="progress-detail-left">
+                <p class="detail-left">Left</p>
+                <p class="detail-left detail-left-amt">$978.00</p>
+              </div>
+            </div>
+          </div>
+          <div class="summary-status-summary">
+            <ul class="summary-status">
+              <li class="summary-status-income">Total Income</li>
+              <li class="summary-status-income summary-amt summary-amt-income">
+                $2,500.00
+              </li>
+              <li class="summary-status-expense">Total Expense</li>
+              <li
+                class="summary-status-expense summary-amt summary-amt-expense"
+              >
+                -$522.00
+              </li>
+              <li class="summary-status-net">Net Amount</li>
+              <li class="summary-status-net summary-amt summary-amt-net">
+                $978.00
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="popupContainer">
+          <div class="popupheader">
+            <div class="input-popup date">02/07/2022</div>
+            <button class="reset-btn">Reset</button>
+          </div>
+          <div class="input-popup select-type">
+            <button class="select-type-btn select-income" data-type="income">
+              Income
+            </button>
+            <button class="select-type-btn select-expense" data-type="expense">
+              Expense
+            </button>
+          </div>
+          <div class="input-popup input-amt-field">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            <label for="input-amt" class="input-currency">$</label>
+
+            <input
+              type="value"
+              class="input-amt-value"
+              id="input-amt"
+              name="input-amt"
+              placeholder="0.00"
+              required
+            />
+          </div>
+
+          <ul
+            class="input-popup input-category input-category-income hidden"
+            data-type="income"
+          >
+            <!-- <li class="category-item category-inc">
+              <div
+                class="category-item-icon category-inc-icon"
+                id="category-inc-salary"
+                data-category="salary"
+              >
+                💸
+              </div>
+              <div class="category-item-name category-inc-name">Salary</div>
+            </li>
+
+            <li class="category-item category-inc">
+              <div
+                class="category-item-icon category-inc-icon"
+                id="category-inc-asset-withdraw"
+                data-category="asset-withdraw"
+              >
+                🪙
+              </div>
+              <div class="category-item-name category-inc-name">
+                Asset withdraw
+              </div>
+            </li>
+
+            <li class="category-item category-inc add">
+              <div
+                class="category-item-icon category-inc-icon category-icon-add"
+                id="category-inc-add"
+                data-category="add"
+              >
+                +
+              </div>
+              <div class="category-item-name category-inc-name">Add</div>
+            </li> -->
+          </ul>
+
+          <ul
+            class="input-popup input-category input-category-expense hidden"
+            data-type="expense"
+          >
+            <!-- <li class="category-item category-exp">
+              <div
+                class="category-item-icon category-exp-icon"
+                id="category-exp-grocery"
+                data-category="grocery"
+              >
+                🌽
+              </div>
+              <div class="category-item-name category-exp-name">Grocery</div>
+            </li>
+
+            <li class="category-item category-exp">
+              <div
+                class="category-item-icon category-exp-icon"
+                id="category-exp-meal"
+                data-category="meal"
+              >
+                🍜
+              </div>
+              <div class="category-item-name category-exp-name">Meal</div>
+            </li>
+            <li class="category-item category-exp add">
+              <div
+                class="category-item-icon category-exp-icon category-icon-add"
+                id="category-exo-add"
+                data-category="add"
+              >
+                +
+              </div>
+              <div class="category-item-name category-exp-name">Add</div>
+            </li> -->
+          </ul>
+
+          <div class="input-popup">
+            <textarea
+              name=""
+              id=""
+              class="input-memo"
+              cols="30"
+              rows="10"
+              maxlength="200"
+              placeholder="Memo"
+            ></textarea>
+          </div>
+          <button class="input-popup input-save-btn">Save</button>
+        </div>
+
+        <div class="item-container">
+          <div class="item-popup item-header">
+            <div class="item-date">02/07/2022</div>
+            <button class="item-delete">Delete</button>
+          </div>
+
+          <div class="item-popup item-category-container item-category-expense">
+            <div
+              class="item-category-icon item-category-icon-exp"
+              data-cat="grocery"
+            >
+              🌽
+            </div>
+            <div class="item-category">Grocery</div>
+          </div>
+
+          <div class="item-popup item-type-amount">
+            <div class="item-type item-expense" data-type="expense">
+              Expense
+            </div>
+            <label for="item-amt" class="item-currency">$</label>
+            <input
+              type="value"
+              class="item-amt"
+              id="item-amt"
+              name="item-amt"
+              required
+            />
+          </div>
+
+          <textarea
+            name=""
+            id=""
+            class="item-popup item-memo"
+            cols="30"
+            rows="10"
+            maxlength="200"
+            placeholder="Memo"
+          ></textarea>
+          <div class="item-popup item-btns">
+            <button class="item-receipt">Receipt</button>
+            <button class="item-recurring">Recurring</button>
+            <button class="item-save-btn">Save</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <i class="fa-solid fa-angle-left"></i>
+            <h3 class="calendar-month"></h3>
+            <i class="fa-solid fa-angle-right"></i>
+          </div>
+          <ul class="calendar-days">
+            <li class="days" id="sun">Sun</li>
+            <li class="days" id="mon">Mon</li>
+            <li class="days" id="tue">Tue</li>
+            <li class="days" id="wed">Wed</li>
+            <li class="days" id="thu">Thu</li>
+            <li class="days" id="fri">Fri</li>
+            <li class="days" id="sat">Sat</li>
+          </ul>
+          <ul class="calendar-dates">
+            <!-- <li class="dates selected">6</li> -->
+            <!-- <li class="dates today detail">
+              8
+              <div class="detail-in-calendar">
+                <div class="calendar-detail-income">$2,500.00</div>
+                <div class="calendar-detail-expense">$522.00</div>
+              </div>
+            </li> -->
+          </ul>
+        </div>
+        <div class="daily-table-container">
+          <table class="daily-container">
+            <tr class="daily-thead">
+              <th class="daily-date">Feb 7, 2022</th>
+              <th class="daily-summary">
+                <table class="daily-summary-tb">
+                  <tr class="daily-summary-row daily-summary-inc">
+                    <td>Total Income</td>
+                    <td class="daily-summary-inc-amt">$0.00</td>
+                  </tr>
+                  <tr class="daily-summary-row daily-summary-exp">
+                    <td>Total Expense</td>
+                    <td class="daily-summary-exp-amt">$0.00</td>
+                  </tr>
+                </table>
+              </th>
+            </tr>
+            <tbody class="daily-body-container"></tbody>
+            <!-- <tr class="daily-tbody" id="${mov.id}">
+              <td class="daily-m-category">
+                <span class="daily-m-category-icon" data="grocery">🌽</span
+                >Grocery
+              </td>
+              <td class="daily-m-amt daily-m-exp">$36.00</td>
+            </tr>
+            <tr class="daily-tbody">
+              <td class="daily-m-category">
+                <span class="daily-m-category-icon" data="meal">🍜</span>Meal
+              </td>
+              <td class="daily-m-amt daily-m-exp">$136.00</td>
+            </tr>
+            <tr class="daily-tbody">
+              <td class="daily-m-category">
+                <span class="daily-m-category-icon" data="utility-bill">💡</span
+                >Utility bill
+              </td>
+              <td class="daily-m-amt daily-m-exp">$50.00</td>
+            </tr>
+            <tr class="daily-tbody">
+              <td class="daily-m-category">
+                <span class="daily-m-category-icon" data="interests">💰</span
+                >Interests
+              </td>
+              <td class="daily-m-amt daily-m-exp">$300.00</td>
+            </tr>
+            <tr class="daily-tbody">
+              <td class="daily-m-category">
+                <span class="daily-m-category-icon" data="salary">💸</span>Salary
+              </td>
+              <td class="daily-m-amt daily-m-inc">$2,500.00</td>
+            </tr> -->
+          </table>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="budget"></section>
+    <section class="section" id="statistics"></section>
+    <section class="section" id="setting">
+      <div class="setting-header">
+        <h1 class="title">Setting</h1>
+        <div class="setting-items">
+          <div class="setting-item">Category</div>
+          <div class="setting-item">Recurssing Data</div>
+        </div>
+        <button class="setting-close-btn">&times;</button>
+      </div>
+
+      <div class="setting-item-header">
+        <h3 class="category-setting-header">Category Setting</h3>
+        <button class="category-save-btn">save</button>
+      </div>
+      <div class="category-setting">
+        <div class="cat-setting income-cat-setting-container">
+          <div class="cat-set-headers income-setting-header">
+            <div class="cat-setting-title">Income Setting</div>
+            <i class="fa-solid fa-circle-plus add-inc-cat"></i>
+          </div>
+          <form class="add-cateogry add-cateogry-inc add-form-hidden">
+            <label for="new-inc-icon"> Icon:</label>
+            <input
+              type="text"
+              name="new-inc-icon"
+              id="new-inc-icon"
+              placeholder=" Press 🪟+."
+            />
+            <i
+              class="fa-solid fa-circle-check add-category-save-btn add-inc-cat-save-btn"
+            ></i>
+
+            <label for="new-inc-name">Name:</label>
+            <input
+              type="text"
+              name="new-inc-name"
+              id="new-inc-name"
+              placeholder="Enter new name"
+            />
+            <i
+              class="fa-solid fa-circle-xmark add-category-cancel-btn add-inc-cat-cancel-btn"
+            ></i>
+          </form>
+          <ul class="drag-container drag-container-inc">
+            <!-- <li class="draggable income-cat" draggable="true">
+              <div class="cat-names">
+                <span class="cat-category-icon">🌽</span>
+                <span class="cat-category-name">Salary</span>
+              </div>
+              <i class="fa-solid fa-grip-lines"></i>
+            </li>-->
+          </ul>
+        </div>
+
+        <div class="cat-setting expense-cat-setting-container">
+          <div class="cat-set-headers expense-setting-header">
+            <div class="cat-setting-title">Expense Setting</div>
+            <i class="fa-solid fa-circle-plus add-exp-cat"></i>
+          </div>
+          <form class="add-cateogry add-cateogry-exp add-form-hidden">
+            <label for="new-exp-icon"> Icon:</label>
+            <input
+              type="text"
+              name="new-exp-icon"
+              id="new-exp-icon"
+              placeholder=" Press 🪟+."
+            />
+            <i
+              class="fa-solid fa-circle-check add-category-save-btn add-exp-cat-save-btn"
+            ></i>
+
+            <label for="new-exp-name">Name:</label>
+            <input
+              type="text"
+              name="new-exp-name"
+              id="new-exp-name"
+              placeholder="Enter new name"
+            />
+            <i
+              class="fa-solid fa-circle-xmark add-category-cancel-btn add-exp-cat-cancel-btn"
+            ></i>
+          </form>
+          <ul class="drag-container drag-container-exp">
+            <!-- <li class="draggable expense-cat">1</li>
+            <li class="draggable expense-cat">2</li>
+            <li class="draggable expense-cat">3</li>
+            <li class="draggable expense-cat">4</li>
+            <li class="draggable expense-cat">5</li> -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="recurrsing-setting">
+        <h3 class="setting-item-header recurssing-setting-header">
+          Recurrsing data Setting
+        </h3>
+      </div>
+    </section>
+    <div id="overlay"></div>
+  </body>
+</html>
