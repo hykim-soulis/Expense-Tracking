@@ -2,6 +2,7 @@
 
 let expCategories = [
   { icon: '🌽', name: 'Grocery' },
+  { icon: '☕', name: 'Coffee' },
   { icon: '🍜', name: 'Meal' },
   { icon: '💰', name: 'Interest' },
   { icon: '📽️', name: 'Entertainments' },
@@ -506,16 +507,21 @@ dailyBody.addEventListener('click', showItem);
 itemSaveBtn.addEventListener('click', saveItemChange);
 itemDeleteBtn.addEventListener('click', deleteItem);
 
+// Setting Script
 const settingNav = document.querySelector('.nav-setting');
 const settingContainer = document.querySelector('#setting');
+const catSettingSaveBtn = document.querySelector('.category-save-btn');
+const dragContainer = document.querySelectorAll('.drag-container');
 const dragIncContainer = document.querySelector('.drag-container-inc');
 const dragExpContainer = document.querySelector('.drag-container-exp');
 const overlay = document.querySelector('#overlay');
 const settingCloseBtn = document.querySelector('.setting-close-btn');
+const addBtns = document.querySelectorAll('.fa-circle-plus');
 const addIncCat = document.querySelector('.add-inc-cat');
 const addExpCat = document.querySelector('.add-exp-cat');
-const addIncForm = document.querySelector('.add-cateogry-inc');
-const addExpForm = document.querySelector('.add-cateogry-exp');
+const addForms = document.querySelectorAll('.add-category');
+const addIncForm = document.querySelector('.add-category-inc');
+const addExpForm = document.querySelector('.add-category-exp');
 const addIncSaveBtn = document.querySelector('.add-inc-cat-save-btn');
 const addExpSaveBtn = document.querySelector('.add-exp-cat-save-btn');
 const addIncCancelBtn = document.querySelector('.add-inc-cat-cancel-btn');
@@ -525,6 +531,19 @@ const addIncNewName = document.querySelector('#new-inc-name');
 const addExpNewIcon = document.querySelector('#new-exp-icon');
 const addExpNewName = document.querySelector('#new-exp-name');
 
+let draggablesInc = document.querySelectorAll('.draggable-inc');
+let draggablesExp = document.querySelectorAll('.draggable-exp');
+
+const openSetting = function () {
+  settingContainer.style.display = 'block';
+  overlay.classList.add('active');
+};
+
+const closeSetting = function () {
+  settingContainer.style.display = 'none';
+  overlay.classList.remove('active');
+};
+
 const catSettingDisplay = function () {
   let incList = '';
   incCategories.forEach((cat) => {
@@ -532,19 +551,20 @@ const catSettingDisplay = function () {
       <div class="cat-names">
         <span class="cat-category-icon-inc">${cat.icon}</span>
         <span class="cat-category-name-inc">${cat.name}</span>
+        <i class="fa-solid fa-trash-can"></i>
       </div>
       <i class="fa-solid fa-grip-lines" draggable="true"></i>
     </li>
     `;
   });
   dragIncContainer.innerHTML = incList;
-
   let expList = '';
   expCategories.forEach((cat) => {
     expList += `<li class="draggable draggable-exp" data-type="expense">
       <div class="cat-names">
         <span class="cat-category-icon-exp">${cat.icon}</span>
         <span class="cat-category-name-exp">${cat.name}</span>
+        <i class="fa-solid fa-trash-can"></i>
       </div>
       <i class="fa-solid fa-grip-lines" draggable="true"></i>
     </li>
@@ -553,8 +573,6 @@ const catSettingDisplay = function () {
   dragExpContainer.innerHTML = expList;
 };
 
-catSettingDisplay();
-settingContainer.style.display = 'block';
 const draggablesIncSetting = function () {
   draggablesInc = document.querySelectorAll('.draggable-inc');
   draggablesInc.forEach((draggableInc) => {
@@ -567,6 +585,7 @@ const draggablesIncSetting = function () {
   });
 };
 const draggablesExpSetting = function () {
+  draggablesExp = document.querySelectorAll('.draggable-exp');
   draggablesExp.forEach((draggableExp) => {
     draggableExp.addEventListener('dragstart', () => {
       draggableExp.classList.add('dragging-exp');
@@ -576,22 +595,8 @@ const draggablesExpSetting = function () {
     });
   });
 };
-// const dragContainers = document.querySelectorAll('.drag-container');
-let draggablesInc = document.querySelectorAll('.draggable-inc');
-let draggablesExp = document.querySelectorAll('.draggable-exp');
-const catSettingSaveBtn = document.querySelector('.category-save-btn');
 
-settingNav.addEventListener('click', () => {
-  settingContainer.style.display = 'block';
-  overlay.classList.add('active');
-});
-
-settingCloseBtn.addEventListener('click', () => {
-  settingContainer.style.display = 'none';
-  overlay.classList.remove('active');
-});
-
-const saveCatSettingChange = function () {
+const saveCatSettingChanges = function () {
   const incIcons = document.querySelectorAll('.cat-category-icon-inc');
   const incNames = document.querySelectorAll('.cat-category-name-inc');
   const expIcons = document.querySelectorAll('.cat-category-icon-exp');
@@ -608,92 +613,57 @@ const saveCatSettingChange = function () {
   }
 };
 
-catSettingSaveBtn.addEventListener('click', saveCatSettingChange);
-
-addIncCat.addEventListener('click', () => {
-  addIncCat.classList.add('add-clicked');
-  addIncForm.classList.remove('add-form-hidden');
-});
-addExpCat.addEventListener('click', () => {
-  addExpCat.classList.add('add-clicked');
-  addExpForm.classList.remove('add-form-hidden');
-});
-
-addIncSaveBtn.addEventListener('click', () => {
-  let icon = addIncNewIcon.value;
-  let name = addIncNewName.value;
-  let incList = `<li class="draggable draggable-inc" data-type="income">
-    <div class="cat-names">
-      <span class="cat-category-icon-inc">${icon}</span>
-      <span class="cat-category-name-inc">${name}</span>
-    </div>
-    <i class="fa-solid fa-grip-lines" draggable="true"></i>
-  </li>`;
-  dragIncContainer.insertAdjacentHTML('beforeend', incList);
-  addIncNewIcon.value = addIncNewName.value = '';
-  addIncCat.classList.remove('add-clicked');
-  addIncForm.classList.add('add-form-hidden');
-
-  draggablesIncSetting();
-});
-
-addIncCancelBtn.addEventListener('click', () => {
-  addIncNewIcon.value = addIncNewName.value = '';
-  addIncCat.classList.remove('add-clicked');
-  addIncForm.classList.add('add-form-hidden');
-});
-
-addExpSaveBtn.addEventListener('click', () => {
-  let icon = addExpNewIcon.value;
-  let name = addExpNewName.value;
-
-  let expList = `<li class="draggable draggable-exp" data-type="expense">
-    <div class="cat-names">
-      <span class="cat-category-icon-exp">${icon}</span>
-      <span class="cat-category-name-exp">${name}</span>
-    </div>
-    <i class="fa-solid fa-grip-lines" draggable="true"></i>
-  </li>`;
-  dragExpContainer.insertAdjacentHTML('beforeend', expList);
-  addExpNewIcon.value = addExpNewName.value = '';
-  addExpCat.classList.remove('add-clicked');
-  addExpForm.classList.add('add-form-hidden');
-  draggablesExp = document.querySelectorAll('.draggable-exp');
-  draggablesExpSetting();
-});
-
-addExpCancelBtn.addEventListener('click', () => {
-  addExpNewIcon.value = addExpNewName.value = '';
-  addExpCat.classList.remove('add-clicked');
-  addExpForm.classList.add('add-form-hidden');
-});
-
-draggablesIncSetting();
-draggablesExpSetting();
-
-dragIncContainer.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  const afterElement = getDragAfterElement(dragIncContainer, e.clientY, 'inc');
-  const draggableInc = document.querySelector('.dragging-inc');
-  if (afterElement === null) {
-    dragIncContainer.appendChild(draggableInc);
+const addClick = function (e) {
+  if (e.target.classList.contains('add-inc-cat')) {
+    addIncCat.classList.add('add-clicked');
+    addIncForm.classList.remove('add-form-hidden');
   } else {
-    dragIncContainer.insertBefore(draggableInc, afterElement);
+    addExpCat.classList.add('add-clicked');
+    addExpForm.classList.remove('add-form-hidden');
   }
-});
+};
 
-dragExpContainer.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  const afterElement = getDragAfterElement(dragExpContainer, e.clientY, 'exp');
-  const draggableExp = document.querySelector('.dragging-exp');
-  if (afterElement === null) {
-    dragExpContainer.appendChild(draggableExp);
-  } else {
-    dragExpContainer.insertBefore(draggableExp, afterElement);
+const formClick = function (e) {
+  const form = e.target.closest('form');
+  const type = form.dataset.type;
+  const container = type === 'income' ? dragIncContainer : dragExpContainer;
+  const addBtnOpacity = type === 'income' ? addIncCat : addExpCat;
+  const inputs = form.querySelectorAll('input');
+  const saveBtn = e.target.closest('.add-category-save-btn');
+  const cancelBtn = e.target.closest('.add-category-cancel-btn');
+  if (!saveBtn && !cancelBtn) return;
+  if (saveBtn) {
+    const item = [];
+    inputs.forEach((input) =>
+      input.value ? item.push(input.value.trim()) : console.log('no input')
+    );
+    if (item.length === 2) {
+      let newItem = `
+      <li class="draggable draggable-${type.slice(0, 3)}" data-type="${type}">
+        <div class="cat-names">
+          <span class="cat-category-icon-${type.slice(0, 3)}">${item[0]}</span>
+          <span class="cat-category-name-${type.slice(0, 3)}">${item[1]}</span>
+          <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <i class="fa-solid fa-grip-lines" draggable="true"></i>
+      </li>
+    `;
+      container.insertAdjacentHTML('beforeend', newItem);
+      inputs.forEach((input) => (input.value = ''));
+      addBtnOpacity.classList.remove('add-clicked');
+      form.classList.add('add-form-hidden');
+      draggablesIncSetting();
+      draggablesExpSetting();
+    }
   }
-});
+  if (cancelBtn) {
+    inputs.forEach((input) => (input.value = ''));
+    addBtnOpacity.classList.remove('add-clicked');
+    form.classList.add('add-form-hidden');
+  }
+};
 
-function getDragAfterElement(container, y, type) {
+const getDragAfterElement = function (container, y, type) {
   const draggableElements = [
     ...container.querySelectorAll(`.draggable-${type}:not(.dragging-${type})`),
   ];
@@ -709,4 +679,51 @@ function getDragAfterElement(container, y, type) {
     },
     { offset: Number.NEGATIVE_INFINITY }
   ).element;
-}
+};
+
+const dragIncs = function (e) {
+  e.preventDefault();
+  const afterElement = getDragAfterElement(dragIncContainer, e.clientY, 'inc');
+  const draggableInc = document.querySelector('.dragging-inc');
+  if (afterElement === null) {
+    dragIncContainer.appendChild(draggableInc);
+  } else {
+    dragIncContainer.insertBefore(draggableInc, afterElement);
+  }
+};
+const dragExps = function (e) {
+  e.preventDefault();
+  const afterElement = getDragAfterElement(dragExpContainer, e.clientY, 'exp');
+  const draggableExp = document.querySelector('.dragging-exp');
+  if (afterElement === null) {
+    dragExpContainer.appendChild(draggableExp);
+  } else {
+    dragExpContainer.insertBefore(draggableExp, afterElement);
+  }
+};
+
+const catDelete = function (e) {
+  const clicked = e.target.closest('.fa-trash-can');
+  if (!clicked) return;
+  const list = e.target.closest('li');
+  const item = [];
+  list.querySelectorAll('span').forEach((el) => item.push(el.textContent));
+  console.log(item);
+  // item.remove();
+};
+
+catSettingDisplay();
+draggablesIncSetting();
+draggablesExpSetting();
+
+settingContainer.style.display = 'block';
+settingNav.addEventListener('click', openSetting);
+settingCloseBtn.addEventListener('click', closeSetting);
+catSettingSaveBtn.addEventListener('click', saveCatSettingChanges);
+addBtns.forEach((add) => add.addEventListener('click', addClick));
+addForms.forEach((form) => form.addEventListener('click', formClick));
+dragContainer.forEach((con) => con.addEventListener('click', catDelete));
+dragIncContainer.addEventListener('dragover', dragIncs);
+dragExpContainer.addEventListener('dragover', dragExps);
+
+console.log(movements);
