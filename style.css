@@ -38,7 +38,6 @@ body {
   align-items: center;
   background-color: var(--main-color);
   color: white;
-
   box-sizing: border-box;
 }
 
@@ -193,8 +192,7 @@ body {
   background-color: var(--white-color);
   color: var(--main-color);
   width: max-content;
-
-  cursor: hand;
+  cursor: pointer;
 }
 .select-type {
   text-align: center;
@@ -209,6 +207,7 @@ body {
   color: var(--white-color);
   border: none;
   border-radius: var(--small-size);
+  cursor: pointer;
 }
 
 .select-income {
@@ -274,6 +273,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .category-item-name {
@@ -339,6 +339,7 @@ body {
   border: none;
   border-radius: var(--small-size);
   background-color: var(--blue-color);
+  cursor: pointer;
 }
 
 /* Item Popup style */
@@ -364,6 +365,7 @@ body {
   background-color: var(--white-color);
   font-size: var(--base-size);
   color: var(--main-color);
+  cursor: pointer;
 }
 
 .item-category-container {
@@ -459,6 +461,7 @@ body {
   border: none;
   border-radius: var(--small-size);
   background-color: var(--blue-color);
+  cursor: pointer;
 }
 
 /* Calendar style */
@@ -599,6 +602,7 @@ body {
 } */
 .daily-tbody {
   border-bottom: 0.5px solid var(--calendar-color);
+  cursor: pointer;
 }
 
 .daily-container tr:nth-last-child(1) {
@@ -676,7 +680,7 @@ body {
   color: var(--white-color);
 }
 
-.title {
+.setting-title {
   margin: 0;
 }
 .setting-close-btn {
@@ -788,6 +792,11 @@ body {
 }
 .fa-grip-lines {
   padding: 0 8px;
+  transition: 0.3s transform;
+}
+
+.fa-grip-lines:hover {
+  transform: scale(1.5);
 }
 
 .drag-container {
@@ -810,15 +819,30 @@ body {
 .fa-trash-can {
   opacity: 0;
   color: var(--text-color);
-  font-size: 0.7rem;
-  margin-left: 1rem;
-  padding: 0.3rem 0.5rem;
+  font-size: 0rem;
+  transition: 0.3s;
 }
 
 .draggable:hover .fa-trash-can {
-  opacity: 0.7;
+  opacity: 1;
   cursor: pointer;
+  padding: 0.3rem var(--small-size);
+  font-size: 0.7rem;
 }
+
+/* @keyframes fade_in_show {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+    width: 0;
+  }
+
+  100% {
+    opacity: 1;
+    width: 1rem;
+    transform: scale(1);
+  }
+} */
 
 .fa-grip-lines {
   cursor: move;

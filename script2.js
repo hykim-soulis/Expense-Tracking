@@ -136,6 +136,30 @@ const getLocalStorage = function () {
   renderCalendar();
 };
 
+const setLocalStorageIncCat = function () {
+  localStorage.setItem('incCategories', JSON.stringify(incCategories));
+};
+
+const getLocalStorageIncCat = function () {
+  const data = JSON.parse(localStorage.getItem('incCategories'));
+  if (!data) return;
+  incCategories = data;
+};
+getLocalStorageIncCat();
+setLocalStorageIncCat();
+
+const setLocalStorageExpCat = function () {
+  localStorage.setItem('expCategories', JSON.stringify(expCategories));
+};
+
+const getLocalStorageExpCat = function () {
+  const data = JSON.parse(localStorage.getItem('expCategories'));
+  if (!data) return;
+  expCategories = data;
+};
+getLocalStorageExpCat();
+setLocalStorageExpCat();
+
 const movePrevMonth = function () {
   current.setMonth(current.getMonth() - 1);
   renderCalendar();
@@ -321,6 +345,8 @@ const selectType = function (e) {
   }
   clicked.classList.remove('type-not-selected');
   type = clicked.dataset.type;
+  getLocalStorageIncCat();
+  getLocalStorageExpCat();
   if (type === 'income') {
     inputCategoryIncome.innerHTML = categoryList(incCategories, type);
     inputCategoryIncome.classList.remove('hidden');
@@ -537,6 +563,7 @@ let draggablesExp = document.querySelectorAll('.draggable-exp');
 const openSetting = function () {
   settingContainer.style.display = 'block';
   overlay.classList.add('active');
+  catSettingDisplay();
 };
 
 const closeSetting = function () {
@@ -546,12 +573,13 @@ const closeSetting = function () {
 
 const catSettingDisplay = function () {
   let incList = '';
+  getLocalStorageIncCat();
   incCategories.forEach((cat) => {
     incList += `<li class="draggable draggable-inc" data-type="income">
       <div class="cat-names">
+        <i class="fa-solid fa-trash-can"></i>
         <span class="cat-category-icon-inc">${cat.icon}</span>
         <span class="cat-category-name-inc">${cat.name}</span>
-        <i class="fa-solid fa-trash-can"></i>
       </div>
       <i class="fa-solid fa-grip-lines" draggable="true"></i>
     </li>
@@ -559,12 +587,13 @@ const catSettingDisplay = function () {
   });
   dragIncContainer.innerHTML = incList;
   let expList = '';
+  getLocalStorageExpCat();
   expCategories.forEach((cat) => {
     expList += `<li class="draggable draggable-exp" data-type="expense">
       <div class="cat-names">
+        <i class="fa-solid fa-trash-can"></i>
         <span class="cat-category-icon-exp">${cat.icon}</span>
         <span class="cat-category-name-exp">${cat.name}</span>
-        <i class="fa-solid fa-trash-can"></i>
       </div>
       <i class="fa-solid fa-grip-lines" draggable="true"></i>
     </li>
@@ -611,6 +640,8 @@ const saveCatSettingChanges = function () {
     let obj = { icon: expIcons[j].textContent, name: expNames[j].textContent };
     expCategories.push(obj);
   }
+  setLocalStorageIncCat();
+  setLocalStorageExpCat();
 };
 
 const addClick = function (e) {
@@ -641,9 +672,9 @@ const formClick = function (e) {
       let newItem = `
       <li class="draggable draggable-${type.slice(0, 3)}" data-type="${type}">
         <div class="cat-names">
+          <i class="fa-solid fa-trash-can"></i>
           <span class="cat-category-icon-${type.slice(0, 3)}">${item[0]}</span>
           <span class="cat-category-name-${type.slice(0, 3)}">${item[1]}</span>
-          <i class="fa-solid fa-trash-can"></i>
         </div>
         <i class="fa-solid fa-grip-lines" draggable="true"></i>
       </li>
@@ -709,6 +740,9 @@ const catDelete = function (e) {
   const item = [];
   list.querySelectorAll('span').forEach((el) => item.push(el.textContent));
   console.log(item);
+
+  setLocalStorageIncCat();
+  setLocalStorageExpCat();
   // item.remove();
 };
 
@@ -716,7 +750,7 @@ catSettingDisplay();
 draggablesIncSetting();
 draggablesExpSetting();
 
-settingContainer.style.display = 'block';
+// settingContainer.style.display = 'block';
 settingNav.addEventListener('click', openSetting);
 settingCloseBtn.addEventListener('click', closeSetting);
 catSettingSaveBtn.addEventListener('click', saveCatSettingChanges);
@@ -727,3 +761,4 @@ dragIncContainer.addEventListener('dragover', dragIncs);
 dragExpContainer.addEventListener('dragover', dragExps);
 
 console.log(movements);
+console.log(movements.keys());
