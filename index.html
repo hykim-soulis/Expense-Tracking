@@ -17,7 +17,8 @@
     ></script>
 
     <link rel="stylesheet" href="style.css" />
-    <script defer src="script2.js"></script>
+    <!-- <script defer type="module" src="./js/script2.js"></script> -->
+    <script defer type="module" src="./js/controller.js"></script>
   </head>
   <body>
     <header class="header-container">
@@ -89,8 +90,8 @@
         </div>
         <div class="popupContainer">
           <div class="popupheader">
-            <div class="input-popup date">02/07/2022</div>
-            <button class="reset-btn">Reset</button>
+            <div class="input-popup popup-date">02/07/2022</div>
+            <button class="clear-btn">Clear</button>
           </div>
           <div class="input-popup select-type">
             <button class="select-type-btn select-income" data-type="income">
@@ -113,12 +114,12 @@
               required
             />
           </div>
-
-          <ul
-            class="input-popup input-category input-category-income hidden"
-            data-type="income"
-          >
-            <!-- <li class="category-item category-inc">
+          <div class="input-popup input-category-container">
+            <ul
+              class="input-category input-category-income hidden"
+              data-type="income"
+            >
+              <!-- <li class="category-item category-inc">
               <div
                 class="category-item-icon category-inc-icon"
                 id="category-inc-salary"
@@ -152,13 +153,13 @@
               </div>
               <div class="category-item-name category-inc-name">Add</div>
             </li> -->
-          </ul>
+            </ul>
 
-          <ul
-            class="input-popup input-category input-category-expense hidden"
-            data-type="expense"
-          >
-            <!-- <li class="category-item category-exp">
+            <ul
+              class="input-popup input-category input-category-expense hidden"
+              data-type="expense"
+            >
+              <!-- <li class="category-item category-exp">
               <div
                 class="category-item-icon category-exp-icon"
                 id="category-exp-grocery"
@@ -182,14 +183,15 @@
             <li class="category-item category-exp add">
               <div
                 class="category-item-icon category-exp-icon category-icon-add"
-                id="category-exo-add"
+                id="category-exp-add"
                 data-category="add"
               >
                 +
               </div>
               <div class="category-item-name category-exp-name">Add</div>
             </li> -->
-          </ul>
+            </ul>
+          </div>
 
           <div class="input-popup">
             <textarea
@@ -205,8 +207,8 @@
           <button class="input-popup input-save-btn">Save</button>
         </div>
 
-        <div class="item-container">
-          <div class="item-popup item-header">
+        <div class="item-container hidden">
+          <!-- <div class="item-popup item-header">
             <div class="item-date">02/07/2022</div>
             <button class="item-delete">Delete</button>
           </div>
@@ -248,7 +250,7 @@
             <button class="item-receipt">Receipt</button>
             <button class="item-recurring">Recurring</button>
             <button class="item-save-btn">Save</button>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -336,36 +338,35 @@
     </section>
     <section class="section" id="budget"></section>
     <section class="section" id="statistics"></section>
-    <section class="section" id="setting">
+    <section class="section setting hidden">
       <div class="setting-header">
         <h1 class="setting-title">Setting</h1>
-        <div class="setting-items">
-          <div class="setting-item">Category</div>
-          <div class="setting-item">Recurssing Data</div>
-        </div>
         <button class="setting-close-btn">&times;</button>
       </div>
 
       <div class="setting-item-header">
         <h3 class="category-setting-header">Category Setting</h3>
         <button class="category-save-btn">save</button>
+        <p class="change-status">There is unsaved change</p>
       </div>
+
       <div class="category-setting">
         <div class="cat-setting income-cat-setting-container">
           <div class="cat-set-headers income-setting-header">
             <div class="cat-setting-title">Income Setting</div>
-            <i class="fa-solid fa-circle-plus add-inc-cat"></i>
+            <i
+              class="fa-solid fa-circle-plus add-inc-cat"
+              data-type="income"
+            ></i>
           </div>
-          <form
-            class="add-category add-category-inc add-form-hidden"
-            data-type="income"
-          >
+          <form class="add-category add-category-inc hidden" data-type="income">
             <label for="new-inc-icon"> Icon:</label>
             <input
               type="text"
               name="new-inc-icon"
               id="new-inc-icon"
               placeholder=" Press 🪟+."
+              required
             />
             <i
               class="fa-solid fa-circle-check add-category-save-btn add-inc-cat-save-btn"
@@ -376,7 +377,8 @@
               type="text"
               name="new-inc-name"
               id="new-inc-name"
-              placeholder="Enter new name"
+              placeholer="Enter new name"
+              required
             />
             <i
               class="fa-solid fa-circle-xmark add-category-cancel-btn add-inc-cat-cancel-btn"
@@ -396,10 +398,13 @@
         <div class="cat-setting expense-cat-setting-container">
           <div class="cat-set-headers expense-setting-header">
             <div class="cat-setting-title">Expense Setting</div>
-            <i class="fa-solid fa-circle-plus add-exp-cat"></i>
+            <i
+              class="fa-solid fa-circle-plus add-exp-cat"
+              data-type="expense"
+            ></i>
           </div>
           <form
-            class="add-category add-category-exp add-form-hidden"
+            class="add-category add-category-exp hidden"
             data-type="expense"
           >
             <label for="new-exp-icon"> Icon:</label>
@@ -435,13 +440,7 @@
           </ul>
         </div>
       </div>
-
-      <div class="recurrsing-setting">
-        <h3 class="setting-item-header recurssing-setting-header">
-          Recurrsing data Setting
-        </h3>
-      </div>
     </section>
-    <div id="overlay"></div>
+    <div class="overlay hidden"></div>
   </body>
 </html>
