@@ -1,9 +1,56 @@
 import View from './View.js';
-import { incCategories, expCategories } from '../config.js';
+import { categories } from '../config.js';
 
 class SettingView extends View {
   _containerEl = document.querySelector('.setting');
   _overlay = document.querySelector('.overlay');
+  openSetting() {
+    this._containerEl.classList.remove('hidden');
+    this._overlay.classList.remove('hidden');
+  }
+  closeSetting() {
+    this._containerEl.classList.add('hidden');
+    this._overlay.classList.add('hidden');
+    this._changeStatus.innerHTML = '';
+  }
+
+  _incCategoryContainer = document.querySelector('.drag-container-inc');
+  _expCategoryContainer = document.querySelector('.drag-container-exp');
+
+  _generateCatMarkup(cat, type) {
+    return `
+      <li class="draggable draggable-${type.slice(0, 3)}" data-type="${type}">
+        <div class="cat-names">
+          <i class="fa-solid fa-trash-can"></i>
+          <span class="cat-category-icon-${type.slice(0, 3)}">${cat.icon}</span>
+          <span class="cat-category-name-${type.slice(0, 3)}">${cat.name}</span>
+        </div>
+        <i class="fa-solid fa-grip-lines" draggable="true"></i>
+      </li>
+    `;
+  }
+
+  _generateMarkup(type) {
+    if (type === 'income') {
+      return categories.incomeCategory
+        .map((cat) => this._generateCatMarkup(cat, type))
+        .join('');
+    } else {
+      return categories.expenseCategory
+        .map((cat) => this._generateCatMarkup(cat, type))
+        .join('');
+    }
+  }
+
+  renderCategories() {
+    this._incCategoryContainer.innerHTML =
+      this._expCategoryContainer.innerHTML = '';
+    const markupInc = this._generateMarkup('income');
+    const markupExp = this._generateMarkup('expense');
+    this._incCategoryContainer.insertAdjacentHTML('afterbegin', markupInc);
+    this._expCategoryContainer.insertAdjacentHTML('afterbegin', markupExp);
+  }
+
   _parentEl = '';
   _headerParentEl = '';
   _closeBtn = document.querySelector('.setting-close-btn');
@@ -18,63 +65,6 @@ class SettingView extends View {
   _addExpBtn = document.querySelector('.add-exp-cat');
   _addIncForm = document.querySelector('.add-category-inc');
   _addExpForm = document.querySelector('.add-category-exp');
-
-  _incCategory = document.querySelector('.drag-container-inc');
-  _expCategory = document.querySelector('.drag-container-exp');
-
-  openSetting() {
-    this._containerEl.classList.remove('hidden');
-    this._overlay.classList.remove('hidden');
-  }
-  closeSetting() {
-    this._containerEl.classList.add('hidden');
-    this._overlay.classList.add('hidden');
-  }
-
-  _generateMarkup(type) {
-    if (type === 'income') {
-      return incCategories
-        .map((cat) => this._generageIncCatMarkup(cat))
-        .join('');
-    } else {
-      return expCategories
-        .map((cat) => this._generageExpCatMarkup(cat))
-        .join('');
-    }
-  }
-
-  renderCategories() {
-    this._incCategory.innerHTML = this._expCategory.innerHTML = '';
-    const markupInc = this._generateMarkup('income');
-    const markupExp = this._generateMarkup('expense');
-    this._incCategory.insertAdjacentHTML('afterbegin', markupInc);
-    this._expCategory.insertAdjacentHTML('afterbegin', markupExp);
-  }
-  _generageIncCatMarkup(cat) {
-    return `
-      <li class="draggable draggable-inc" data-type="income">
-        <div class="cat-names">
-          <i class="fa-solid fa-trash-can"></i>
-          <span class="cat-category-icon-inc">${cat.icon}</span>
-          <span class="cat-category-name-inc">${cat.name}</span>
-        </div>
-        <i class="fa-solid fa-grip-lines" draggable="true"></i>
-      </li>
-    `;
-  }
-
-  _generageExpCatMarkup(cat) {
-    return `
-      <li class="draggable draggable-exp" data-type="expense">
-        <div class="cat-names">
-          <i class="fa-solid fa-trash-can"></i>
-          <span class="cat-category-icon-exp">${cat.icon}</span>
-          <span class="cat-category-name-exp">${cat.name}</span>
-        </div>
-        <i class="fa-solid fa-grip-lines" draggable="true"></i>
-      </li>
-    `;
-  }
 
   draggablesIncSetting() {
     document.querySelectorAll('.draggable-inc').forEach((draggableInc) => {
@@ -118,39 +108,41 @@ class SettingView extends View {
   }
 
   dragHandler(handler) {
-    this._incCategory.addEventListener(
+    this._incCategoryContainer.addEventListener(
       'dragover',
       function (e) {
         e.preventDefault();
         const afterElement = this._getDragAfterElement(
-          this._incCategory,
+          this._incCategoryContainer,
           e.clientY,
           'inc'
         );
         const draggableInc = document.querySelector('.dragging-inc');
         if (afterElement === null) {
-          this._incCategory.appendChild(draggableInc);
+          this._incCategoryContainer.appendChild(draggableInc);
         } else {
-          this._incCategory.insertBefore(draggableInc, afterElement);
+          this._incCategoryContainer.insertBefore(draggableInc, afterElement);
         }
+        this._changeStatus.innerHTML = 'There is unsaved change';
       }.bind(this)
     );
 
-    this._expCategory.addEventListener(
+    this._expCategoryContainer.addEventListener(
       'dragover',
       function (e) {
         e.preventDefault();
         const afterElement = this._getDragAfterElement(
-          this._expCategory,
+          this._expCategoryContainer,
           e.clientY,
           'exp'
         );
         const draggableExp = document.querySelector('.dragging-exp');
         if (afterElement === null) {
-          this._expCategory.appendChild(draggableExp);
+          this._expCategoryContainer.appendChild(draggableExp);
         } else {
-          this._expCategory.insertBefore(draggableExp, afterElement);
+          this._expCategoryContainer.insertBefore(draggableExp, afterElement);
         }
+        this._changeStatus.innerHTML = 'There is unsaved change';
       }.bind(this)
     );
 
@@ -176,7 +168,9 @@ class SettingView extends View {
           const form = e.target.closest('form');
           const type = form.dataset.type;
           const container =
-            type === 'income' ? this._incCategory : this._expCategory;
+            type === 'income'
+              ? this._incCategoryContainer
+              : this._expCategoryContainer;
           const addBtnOpacity =
             type === 'income' ? this._addIncBtn : this._addExpBtn;
           const inputs = form.querySelectorAll('input');
@@ -208,6 +202,7 @@ class SettingView extends View {
               form.classList.add('hidden');
               this.draggablesIncSetting();
               this.draggablesExpSetting();
+              this._changeStatus.innerHTML = 'There is unsaved change';
             }
           }
           if (cancelBtn) {
@@ -221,8 +216,29 @@ class SettingView extends View {
 
     this._settingSaveBtn.addEventListener(
       'click',
-      function (e) {
-        e.preventDefault();
+      function () {
+        const incIcons = document.querySelectorAll('.cat-category-icon-inc');
+        const incNames = document.querySelectorAll('.cat-category-name-inc');
+        const expIcons = document.querySelectorAll('.cat-category-icon-exp');
+        const expNames = document.querySelectorAll('.cat-category-name-exp');
+        const incCategories = [];
+        const expCategories = [];
+        for (let i = 0; i < incIcons.length; i++) {
+          let obj = {
+            icon: incIcons[i].innerHTML.trim(),
+            name: incNames[i].innerHTML.trim(),
+          };
+          incCategories.push(obj);
+        }
+        for (let j = 0; j < expIcons.length; j++) {
+          let obj = {
+            icon: expIcons[j].innerHTML.trim(),
+            name: expNames[j].innerHTML.trim(),
+          };
+          expCategories.push(obj);
+        }
+        this._changeStatus.innerHTML = 'saved!';
+        handler(incCategories, expCategories);
       }.bind(this)
     );
   }

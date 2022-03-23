@@ -1,3 +1,5 @@
+import { setLocalStorage, getLocalStorage } from './helper.js';
+import { categories } from './config.js';
 import * as model from './model.js';
 import calendarView from './views/calendarView.js';
 import popupView from './views/popupView.js';
@@ -8,7 +10,15 @@ import settingView from './views/settingView.js';
 import navView from './views/navView.js';
 
 const controlCalendar = function () {
-  model.getLocalStorage();
+  if (getLocalStorage('income-categories')) {
+    categories.incomeCategory = getLocalStorage('income-categories');
+    categories.expenseCategory = getLocalStorage('expense-categories');
+  } else {
+    setLocalStorage('income-categories', categories.incomeCategory);
+    setLocalStorage('expense-categories', categories.expenseCategory);
+  }
+
+  model.state.movements = getLocalStorage('movements');
   model.createCurDate();
   calendarView.render(model.state);
   calendarView.renderHeader();
@@ -27,6 +37,8 @@ const controlCalendarClick = function (data) {
     model.updateCalendarMonth(data);
     controlCalendar();
   } else {
+    categories.incomeCategory = getLocalStorage('income-categories');
+    categories.expenseCategory = getLocalStorage('expense-categories');
     model.selectCalendarDate(data);
     calendarView.renderSelected(model.state.date.select);
     popupView.openPopup();
@@ -44,7 +56,7 @@ const controlPopup = function (data) {
   calendarView.updateDailyDetail(model.state.date.select);
   monthlyView.render(model.state);
   monthlyView.renderProgress();
-  model.setLocalStorage();
+  setLocalStorage('movements', model.state.movements);
 };
 
 const controlItemClick = function (id) {
@@ -57,7 +69,7 @@ const controlItemClick = function (id) {
 
 const controlItemBtns = function (btn) {
   btn === 'delete' ? model.deleteItem() : model.saveItem(btn);
-  model.setLocalStorage();
+  setLocalStorage('movements', model.state.movements);
   dailyView.render(model.state);
   dailyView.renderHeader();
   calendarView.updateDailyDetail(model.state.date.select);
@@ -74,10 +86,16 @@ const controlSettingOpen = function () {
   settingView.draggablesExpSetting();
 };
 
-const controlDrag = function () {};
+const controlDrag = function (incCategories, expCategories) {
+  categories.incomeCategory = incCategories;
+  categories.expenseCategory = expCategories;
+  setLocalStorage('income-categories', categories.incomeCategory);
+  setLocalStorage('expense-categories', categories.expenseCategory);
+};
 const controlSettingClose = function () {
   settingView.closeSetting();
 };
+
 const init = function () {
   calendarView.loadCanlenderHandler(controlCalendar);
   calendarView.calendarClickHandler(controlCalendarClick);

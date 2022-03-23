@@ -1,6 +1,6 @@
 import View from './View.js';
 import { formatAmt, formatDate } from '../helper.js';
-import { incCategories, expCategories } from '../config.js';
+import { categories } from '../config.js';
 
 class PopupView extends View {
   _container = document.querySelector('.popupContainer');
@@ -96,7 +96,10 @@ class PopupView extends View {
             cat.classList.remove('hidden');
         });
         const category =
-          this._movement.type === 'income' ? incCategories : expCategories;
+          this._movement.type === 'income'
+            ? categories.incomeCategory
+            : categories.expenseCategory;
+
         this._openCategory(this._movement.type, category);
       }.bind(this)
     );
