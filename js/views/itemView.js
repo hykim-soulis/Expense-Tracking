@@ -81,10 +81,36 @@ class ItemView extends View {
         }
         if (saveBtn) {
           this._data.amount = Number(
-            document.querySelector('.item-amt').value.replace(',', '')
+            document.querySelector('.item-amt').value.replaceAll(',', '')
           );
           this._data.memo = document.querySelector('.item-memo').value;
-          handler(this._data);
+          if (
+            document.querySelectorAll('.caution').length === 0 &&
+            this._data.amount > 0
+          ) {
+            handler(this._data);
+          }
+        }
+      }.bind(this)
+    );
+
+    this._parentEl.addEventListener(
+      'focusout',
+      function (e) {
+        e.preventDefault();
+        const inputAmt = e.target.closest('.item-amt');
+        if (!inputAmt) return;
+        const decimals = inputAmt.value.split('.')[1]?.length;
+        if (
+          Number(inputAmt.value.replaceAll(',', '')) > 0 &&
+          (!decimals || decimals <= 2)
+        ) {
+          inputAmt.value = formatAmt(
+            Number(inputAmt.value.replaceAll(',', ''))
+          );
+          inputAmt.classList.remove('caution');
+        } else {
+          inputAmt.classList.add('caution');
         }
       }.bind(this)
     );
