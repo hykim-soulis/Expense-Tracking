@@ -140,9 +140,13 @@ class PopupView extends View {
     this._inputAmtEl.addEventListener(
       'focusout',
       function () {
-        if (Number(this._inputAmtEl.value.replace(',', '')) > 0) {
+        const decimals = this._inputAmtEl.value.split('.')[1]?.length;
+        if (
+          Number(this._inputAmtEl.value.replaceAll(',', '')) > 0 &&
+          (!decimals || decimals <= 2)
+        ) {
           this._inputAmtEl.value = formatAmt(
-            Number(this._inputAmtEl.value.replace(',', ''))
+            Number(this._inputAmtEl.value.replaceAll(',', ''))
           );
           this._inputAmtEl.classList.remove('caution');
         } else {
@@ -157,7 +161,7 @@ class PopupView extends View {
       function (e) {
         e.preventDefault();
         this._movement.mov.amount = Number(
-          this._inputAmtEl.value.replace(',', '')
+          this._inputAmtEl.value.replaceAll(',', '')
         );
         this._movement.mov.memo = this._memoEl.value;
 
@@ -172,6 +176,7 @@ class PopupView extends View {
         if (this._movement.mov.amount <= 0)
           this._inputAmtEl.classList.add('caution');
         if (
+          document.querySelectorAll('.caution').length === 0 &&
           this._movement.type &&
           this._movement.mov.category &&
           this._movement.type === this._movement.typeFromCat &&
