@@ -30,3 +30,13 @@ export const months = [
   'November',
   'December',
 ];
+
+export const setLocalStorage = function (key, dataPath) {
+  localStorage.setItem(key, JSON.stringify(dataPath));
+};
+
+export const getLocalStorage = function (key) {
+  const dataObj = JSON.parse(localStorage.getItem(key));
+  if (!dataObj) return;
+  return dataObj;
+};

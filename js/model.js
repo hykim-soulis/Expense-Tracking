@@ -139,17 +139,6 @@ export const saveItem = function (obj) {
   state.movements[select].movs.forEach((el) => updatedailySum(el, select));
 };
 
-export const setLocalStorage = function () {
-  localStorage.setItem('movements', JSON.stringify(state.movements));
-};
-
-export const getLocalStorage = function () {
-  const dataObj = JSON.parse(localStorage.getItem('movements'));
-  if (!dataObj) return;
-
-  state.movements = dataObj;
-};
-
 const init = function () {
   createDefaultSelect();
 };
