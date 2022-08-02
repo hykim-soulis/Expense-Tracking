@@ -14,6 +14,13 @@ class SettingView extends View {
     this._changeStatus.innerHTML = '';
   }
 
+  settingHandler(handler) {
+    this._closeBtn.addEventListener('click', function (e) {
+      const closeBtn = e.target.closest('.setting-close-btn');
+      if (!closeBtn) return;
+      handler();
+    });
+  }
   _incCategoryContainer = document.querySelector('.drag-container-inc');
   _expCategoryContainer = document.querySelector('.drag-container-exp');
 
@@ -241,14 +248,6 @@ class SettingView extends View {
         handler(incCategories, expCategories);
       }.bind(this)
     );
-  }
-
-  settingHandler(handler) {
-    this._closeBtn.addEventListener('click', function (e) {
-      const closeBtn = e.target.closest('.setting-close-btn');
-      if (!closeBtn) return;
-      handler();
-    });
   }
 }
 export default new SettingView();

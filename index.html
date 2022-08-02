@@ -31,16 +31,16 @@
           <li class="nav-items nav-home">
             <a href="#" class="nav-link">Home</a>
           </li>
-          <li class="nav-items nav-budget">
+          <!-- <li class="nav-items nav-budget">
             <a href="#" class="nav-link">Budget</a>
           </li>
           <li class="nav-items nav-stat">
             <a href="#" class="nav-link">Statistics</a>
-          </li>
+          </li> -->
           <li class="nav-items nav-setting">
             <a href="#" class="nav-link">Setting</a>
           </li>
-          <li class="nav-items" id="deleteAll">DeleteAll</li>
+          <!-- <li class="nav-items" id="deleteAll">DeleteAll</li> -->
         </ul>
       </nav>
     </header>
@@ -51,7 +51,7 @@
             <span class="summary-title-month">February</span> Summary
           </h2>
 
-          <div class="summary-progress">
+          <!-- <div class="summary-progress">
             <p class="summary-budget">
               Budget <span class="summary-budget-amt">$1,500.00</span>
             </p>
@@ -68,7 +68,7 @@
                 <p class="detail-left detail-left-amt">$978.00</p>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="summary-status-summary">
             <ul class="summary-status">
               <li class="summary-status-income">Total Income</li>
@@ -336,20 +336,49 @@
         </div>
       </div>
     </section>
-    <section class="section" id="budget"></section>
-    <section class="section" id="statistics"></section>
+    <!-- <section class="section budget" id="budget">
+      <div class="budget-header">
+        <h1 class="budget-title">Budget</h1>
+        <button class="budget-close-btn">&times;</button>
+      </div>
+
+      <div class="budget-item-header">
+        <i class="fa-solid fa-angle-left"></i>
+        <h3 class="budget-year">2022</h3>
+        <i class="fa-solid fa-angle-right"></i>
+      </div>
+
+      <div class="budget-monthly-setting">
+        <div class="budget-monthly">
+          <div class="budget-month">January</div>
+
+          <label for="input-budget-amt" class="input-currency">$</label>
+
+          <input
+            type="value"
+            class="input-amt-value"
+            id="input-amt"
+            name="input-budget-amt"
+            placeholder="0.00"
+          />
+        </div>
+
+        <div>Jan</div>
+        <div>Jan</div>
+        <div>Jan</div>
+      </div>
+    </section> -->
+    <!-- <section class="section statistics hidden" id="statistics"></section> -->
     <section class="section setting hidden">
       <div class="setting-header">
         <h1 class="setting-title">Setting</h1>
         <button class="setting-close-btn">&times;</button>
       </div>
-
       <div class="setting-item-header">
         <h3 class="category-setting-header">Category Setting</h3>
-        <button class="category-save-btn">save</button>
+        <button class="category-save-btn nav-save-btn">save</button>
         <p class="change-status"></p>
       </div>
-
       <div class="category-setting">
         <div class="cat-setting income-cat-setting-container">
           <div class="cat-set-headers income-setting-header">
