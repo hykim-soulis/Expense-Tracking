@@ -4,7 +4,7 @@ import { months, formatAmt } from '../helper.js';
 class MonthlyView extends View {
   _headerParentEl = document.querySelector('.summary-title');
   _parentEl = document.querySelector('.summary-status');
-  _progressEl = document.querySelector('.summary-progress');
+  // _progressEl = document.querySelector('.summary-progress');
   _monthlyExp;
   _generateProgressMarkup() {
     return `
@@ -31,12 +31,11 @@ class MonthlyView extends View {
         </div>
     `;
   }
-  renderProgress() {
-    const markup = this._generateProgressMarkup();
-
-    this._progressEl.innerHTML = '';
-    this._progressEl.insertAdjacentHTML('afterbegin', markup);
-  }
+  // renderProgress() {
+  //   const markup = this._generateProgressMarkup();
+  //   this._progressEl.innerHTML = '';
+  //   this._progressEl.insertAdjacentHTML('afterbegin', markup);
+  // }
   _generateHeaderMarkup() {
     return `<span class="summary-title-month">${
       months[this._data.date.curDate[1]]

@@ -7,6 +7,7 @@ import dailyView from './views/dailyView.js';
 import monthlyView from './views/monthlyView.js';
 import itemView from './views/itemView.js';
 import settingView from './views/settingView.js';
+// import budgetView from './views/budgetView.js';
 import navView from './views/navView.js';
 
 const controlCalendar = function () {
@@ -18,7 +19,12 @@ const controlCalendar = function () {
     setLocalStorage('expense-categories', categories.expenseCategory);
   }
 
-  model.state.movements = getLocalStorage('movements');
+  if (getLocalStorage('movements')) {
+    model.state.movements = getLocalStorage('movements');
+  } else {
+    setLocalStorage('movements', model.state.movements);
+  }
+
   model.createCurDate();
   calendarView.render(model.state);
   calendarView.renderHeader();
@@ -29,7 +35,7 @@ const controlCalendar = function () {
   dailyView.renderHeader();
   monthlyView.render(model.state);
   monthlyView.renderHeader();
-  monthlyView.renderProgress();
+  // monthlyView.renderProgress();
 };
 
 const controlCalendarClick = function (data) {
@@ -55,7 +61,7 @@ const controlPopup = function (data) {
   dailyView.renderHeader();
   calendarView.updateDailyDetail(model.state.date.select);
   monthlyView.render(model.state);
-  monthlyView.renderProgress();
+  // monthlyView.renderProgress();
   setLocalStorage('movements', model.state.movements);
 };
 
@@ -74,16 +80,20 @@ const controlItemBtns = function (btn) {
   dailyView.renderHeader();
   calendarView.updateDailyDetail(model.state.date.select);
   monthlyView.render(model.state);
-  monthlyView.renderProgress();
+  // monthlyView.renderProgress();
   popupView.openPopup();
   itemView.closeItem();
 };
 
-const controlSettingOpen = function () {
-  settingView.openSetting();
-  settingView.renderCategories();
-  settingView.draggablesIncSetting();
-  settingView.draggablesExpSetting();
+const controlNavOpen = function (clicked) {
+  if (clicked === 'setting') {
+    settingView.openSetting();
+    settingView.renderCategories();
+    settingView.draggablesIncSetting();
+    settingView.draggablesExpSetting();
+  } else if (clicked === 'budget') {
+    budgetView.openBudget();
+  }
 };
 
 const controlDrag = function (incCategories, expCategories) {
@@ -95,6 +105,9 @@ const controlDrag = function (incCategories, expCategories) {
 const controlSettingClose = function () {
   settingView.closeSetting();
 };
+const controlBudgetClose = function () {
+  budgetView.closeBudget();
+};
 
 const init = function () {
   calendarView.loadCanlenderHandler(controlCalendar);
@@ -102,8 +115,9 @@ const init = function () {
   popupView.popupMovHandler(controlPopup);
   dailyView.dailyItemHandler(controlItemClick);
   itemView.itemUpdateHandler(controlItemBtns);
-  navView.navSettingHandler(controlSettingOpen);
+  navView.navSettingHandler(controlNavOpen);
   settingView.dragHandler(controlDrag);
   settingView.settingHandler(controlSettingClose);
+  // budgetView.budgetHandler(controlBudgetClose);
 };
 init();
